@@ -3,7 +3,7 @@ on:
     - cron:  '0 6 * * *'
 
 jobs:
-  update:
+  .update:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@master
@@ -24,7 +24,7 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         github_token: ${{ secrets.gh }}
-  deploy:
+  .deploy:
     needs: update
     runs-on: ubuntu-latest
     steps:
