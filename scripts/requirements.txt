@@ -1,1 +1,2 @@
-dataflows==0.0.71
+numpy==1.19.2
+pandas==1.1.3
