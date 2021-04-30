@@ -23,8 +23,6 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Process Data
       run: |
-        python scripts/process_worldwide.py
-        python scripts/process_us.py
         python scripts/plot.py
     - name: Commit files
       run: |
