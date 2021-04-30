@@ -6,7 +6,7 @@ on:
   schedule:
     # Upstream repo is updated daily at 4:50 AM UTC:
     # we can retrieve data a little while later.
-    - cron: '0 6 * * *'
+    - cron: '0 30 * * *'
 
 jobs:
   update:
