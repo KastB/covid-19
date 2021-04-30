@@ -20,11 +20,12 @@ jobs:
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
-        if [ -f scripts/requirements.txt ]; then pip install -r scripts/requirements.txt; fi
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     - name: Process Data
       run: |
         python scripts/process_worldwide.py
         python scripts/process_us.py
+        python scripts/plot.py
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"

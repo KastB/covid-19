@@ -1,3 +1,6 @@
+
+# Plots
+https://kastb.github.io/covid-19/
 # Forked from https://github.com/datasets/covid-19
 
 Data generation for some analyses: https://docs.google.com/spreadsheets/d/1eOLaajQ3kxy5mdvK8vPoZrMp2CbyS_krUGjKkQWBwaI/edit?usp=sharing
