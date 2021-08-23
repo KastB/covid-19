@@ -1,10 +1,4 @@
-"""
-Description
 
-@author: Bernd Kast
-@copyright: Copyright (c) 2018, Siemens AG
-@note:  All rights reserved.
-"""
 
 import pandas as pd
 import numpy as np
@@ -24,10 +18,10 @@ pd.options.plotting.backend = "plotly"
 days_till_healthy = 15
 lethality = 0.0157
 
-data_indices = [6, 4, 7]
+data_indices = [8, 6, 4, 7]
 labels = ["date",
           "confirmed", "deaths", "currently_infected", "confirmed_100k",
-          "deaths_100k", "currently_infected_100k", "est_infected_100k"]
+          "deaths_100k", "currently_infected_100k", "est_infected_100k", "deaths_100k_14d"]
 interesting_countries = sorted(["China",
                                 "Brazil",
                                 "France",
@@ -272,7 +266,9 @@ def calculate_statistics(country):
     currently_infected_100k = currently_infected / residents * 100000
     tmp = confirmed - currently_infected
     est_infected_100k = deaths / lethality * np.divide(confirmed, tmp, where=tmp != 0) / residents * 100000
-    return date, confirmed, deaths, currently_infected, confirmed_100k, deaths_100k, currently_infected_100k, est_infected_100k
+    deaths_100k_14d = deaths_100k.copy()
+    deaths_100k_14d[14:] -= deaths_100k[:-14]
+    return date, confirmed, deaths, currently_infected, confirmed_100k, deaths_100k, currently_infected_100k, est_infected_100k, deaths_100k_14d
 
 
 def add_plot(fig, data, dat_index, ):
@@ -295,7 +291,7 @@ for d in data_indices:
 
     fig.show()
 
-    pio.write_html(fig, file="../docs/" + labels[d] + '.html', auto_open=True)
+    pio.write_html(fig, file="docs/" + labels[d] + '.html', auto_open=True)
     lines.append("{{% include {}.html %}}".format(labels[d]))
 
 # with open("linklist.html", "w") as fp:
