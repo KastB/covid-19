@@ -1,10 +1,4 @@
-"""
-Description
 
-@author: Bernd Kast
-@copyright: Copyright (c) 2018, Siemens AG
-@note:  All rights reserved.
-"""
 
 import pandas as pd
 import numpy as np
@@ -12,6 +6,9 @@ import plotly.graph_objects as go
 
 import plotly.io as pio
 import sys
+
+from plotly.subplots import make_subplots
+
 if sys.version_info[0] < 3:
     from StringIO import StringIO
 else:
@@ -24,10 +21,10 @@ pd.options.plotting.backend = "plotly"
 days_till_healthy = 15
 lethality = 0.0157
 
-data_indices = [6, 4, 7]
+data_indices = [8, 6, 4, 7, [6, 8]]
 labels = ["date",
           "confirmed", "deaths", "currently_infected", "confirmed_100k",
-          "deaths_100k", "currently_infected_100k", "est_infected_100k"]
+          "deaths_100k", "currently_infected_100k", "est_infected_100k", "deaths_100k_14d"]
 interesting_countries = sorted(["China",
                                 "Brazil",
                                 "France",
@@ -269,18 +266,24 @@ def calculate_statistics(country):
     currently_infected[days_till_healthy:] -= confirmed[:-days_till_healthy]
     confirmed_100k = confirmed / residents * 100000
     deaths_100k = deaths / residents * 100000
+    currently_infected = np.where(currently_infected < 0, 0, currently_infected)
     currently_infected_100k = currently_infected / residents * 100000
     tmp = confirmed - currently_infected
     est_infected_100k = deaths / lethality * np.divide(confirmed, tmp, where=tmp != 0) / residents * 100000
-    return date, confirmed, deaths, currently_infected, confirmed_100k, deaths_100k, currently_infected_100k, est_infected_100k
+
+    deaths_100k_14d = deaths_100k.copy()
+    deaths_100k_14d[14:] -= deaths_100k[:-14]
+    deaths_100k_14d = np.where(deaths_100k_14d < 0, 0, deaths_100k_14d)
+    return date, confirmed, deaths, currently_infected, confirmed_100k, deaths_100k, currently_infected_100k, est_infected_100k, deaths_100k_14d
 
 
-def add_plot(fig, data, dat_index, ):
+def add_plot(fig, data, dat_index, secondary=False, ):
     for d in data:
         fig.add_trace(go.Scatter(x=d[1][0], y=d[1][dat_index],
                                  # mode="lines+markers",
                                  mode="lines",
-                                 name=d[0])
+                                 name=d[0]),
+                      secondary_y=secondary
                       )
 
 
@@ -288,15 +291,17 @@ data = [(country, calculate_statistics(country)) for country in interesting_coun
 
 lines = list()
 for d in data_indices:
-    fig = go.Figure()
-    fig.update_yaxes(title_text=labels[d])
+    # fig = go.Figure()
+    fig = make_subplots(specs=[[{"secondary_y": True}]])
+
     fig.update_xaxes(title_text="Date")
-    add_plot(fig, data, d)
+    if type(d) is not int:
+        add_plot(fig, data, d[0], False)
+        add_plot(fig, data, d[1], True)
+        fig.update_yaxes(title_text=labels[d[0]])
+        fig.update_yaxes(title_text=labels[d[1]], secondary_y=True)
+    else:
+        add_plot(fig, data, d)
+        fig.update_yaxes(title_text=labels[d])
 
     fig.show()
-
-    pio.write_html(fig, file="../docs/" + labels[d] + '.html', auto_open=True)
-    lines.append("{{% include {}.html %}}".format(labels[d]))
-
-# with open("linklist.html", "w") as fp:
-#     fp.writelines(lines)
