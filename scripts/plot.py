@@ -27,6 +27,7 @@ labels = ["date",
           "deaths_100k", "currently_infected_100k", "est_infected_100k", "deaths_100k_14d"]
 interesting_countries = sorted(["China",
                                 "Brazil",
+                                "Denmark",
                                 "France",
                                 "Germany",
                                 "India",
