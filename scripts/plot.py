@@ -43,7 +43,8 @@ interesting_countries = sorted(["China",
                                 "Austria",
                                 "Switzerland",
                                 "Poland",
-                                "US"
+                                "US",
+                                "South Africa"
                                 ])
 
 if from_cache:
@@ -71,15 +72,15 @@ Belarus,9408400
 Belgium,11535652
 Belize,419199
 Benin,12114193
-Bhutan,64054
-Bolivia,748931
+Bhutan,771612
+Bolivia,11670000
 Bosnia and Herzegovina,11633371
 Botswana,3332593
 Brazil,209000000
 Brunei,212250204
-Bulgaria,3003
-Burkina Faso,4595
-Burma,6951482
+Bulgaria,6927000
+Burkina Faso,20900000
+Burma,54410000
 Burundi,21510181
 Cabo Verde,12309600
 Cambodia,15288489
@@ -91,13 +92,13 @@ Chile,19458310
 China,1405035800
 Colombia,50372424
 Comoros,758316
-Congo (Brazzaville),101935800
-Congo (Kinshasa),152
+Congo (Brazzaville),5518000
+Congo (Kinshasa),89560000
 Costa Rica,5111238
-Cote d'Ivoire,1
+Cote d'Ivoire,26380000
 Croatia,4058165
 Cuba,11193470
-Cyprus,8759
+Cyprus,1200000
 Czechia,10699142
 Denmark,5825337
 Diamond Princess,1000
@@ -130,7 +131,7 @@ Haiti,11743017
 Holy See,130000
 Honduras,9304380
 Hungary,9769526
-Iceland,3667
+Iceland,366700
 India,1368870621
 Indonesia,269603400
 Iran,83895801
@@ -167,7 +168,7 @@ Mauritania,4173077
 Mauritius,1266000
 Mexico,127792286
 Moldova,2640438
-Monaco,381
+Monaco,38100
 Mongolia,3344518
 Montenegro,621873
 Morocco,36056313
@@ -199,7 +200,7 @@ Saint Kitts and Nevis,52823
 Saint Lucia,178696
 Saint Vincent and the Grenadines,110696
 Samoa,196000
-San Marino,3363
+San Marino,33630
 Sao Tome and Principe,21024
 Saudi Arabia,34218169
 Senegal,16705608
@@ -216,7 +217,7 @@ South Sudan,13249924
 Spain,47329981
 Sri Lanka,21803000
 Sudan,42938585
-Suriname,5901
+Suriname,590100
 Sweden,10367232
 Switzerland,8632703
 Syria,17500657
@@ -238,8 +239,8 @@ US,330538821
 Uzbekistan,34488572
 Venezuela,28435943
 Vietnam,96483981
-West Bank and Gaza,11558
-Western Sahara,597
+West Bank and Gaza,1155800
+Western Sahara,597000
 Yemen,29825968
 Zambia,17885422
 Zimbabwe,15473818
@@ -280,14 +281,27 @@ def calculate_statistics(country):
 
 def add_plot(fig, data, dat_index, secondary=False, ):
     for d in data:
-        fig.add_trace(go.Scatter(x=d[1][0], y=d[1][dat_index],
+        if type(dat_index) is not int:
+            index = dat_index[0]
+        else:
+            index = dat_index
+        fig.add_trace(go.Scatter(x=d[1][0], y=d[1][index],
                                  # mode="lines+markers",
                                  mode="lines",
                                  name=d[0]),
-                      secondary_y=secondary
+                      secondary_y=False
                       )
+        if type(dat_index) is not int:
+            index = dat_index[1]
+            fig.add_trace(go.Scatter(x=d[1][0], y=d[1][index],
+                                     # mode="lines+markers",
+                                     mode="lines",
+                                     name=d[0]),
+                          secondary_y=True
+                          )
 
 
+# data = [(country, calculate_statistics(country)) for country in [r[0] for r in residents.values]]
 data = [(country, calculate_statistics(country)) for country in interesting_countries]
 
 lines = list()
@@ -297,8 +311,7 @@ for d in data_indices:
 
     fig.update_xaxes(title_text="Date")
     if type(d) is not int:
-        add_plot(fig, data, d[0], False)
-        add_plot(fig, data, d[1], True)
+        add_plot(fig, data, d)
         fig.update_yaxes(title_text=labels[d[0]])
         fig.update_yaxes(title_text=labels[d[1]], secondary_y=True)
     else:
