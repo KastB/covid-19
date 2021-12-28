@@ -24,6 +24,7 @@ jobs:
     - name: Process Data
       run: |
         python scripts/plot.py
+        python3 scripts/plot_rki.py
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"

@@ -8,7 +8,6 @@ Description
 import json
 
 import numpy as np
-import numpy_indexed as npi
 import pandas as pd
 import plotly
 import requests
