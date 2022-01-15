@@ -149,6 +149,5 @@ env36/
 .checkpoints/
 
 *.csv
-*docs
 *data
 *.idea
