@@ -312,10 +312,15 @@ for d in data_indices:
     fig.update_xaxes(title_text="Date")
     if type(d) is not int:
         add_plot(fig, data, d)
-        fig.update_yaxes(title_text=labels[d[0]])
+        label = labels[d[0]]
+        fig.update_yaxes(title_text=label)
         fig.update_yaxes(title_text=labels[d[1]], secondary_y=True)
+        label += "_"
+        label += labels[d[1]]
     else:
         add_plot(fig, data, d)
-        fig.update_yaxes(title_text=labels[d])
+        label = labels[d]
+        fig.update_yaxes(title_text=label)
 
-    fig.show()
+    # fig.show()
+    fig.write_html(f"../plots/jh_{label}.html")

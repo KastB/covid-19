@@ -110,10 +110,11 @@ def add_trace(df_filtered, fig, all_time, start_dat, end_dat, value_key, date_ke
                       )
 
     else:
-        kernel_size = 14
-        kernel = np.ones(kernel_size) / kernel_size
-        data_convolved = np.convolve(df_filtered, kernel, mode='same')
-        fig.add_trace(go.Scatter(x=df_filtered.keys().strftime('%Y-%m-%d').values,
+        # kernel_size = 14
+        # kernel = np.ones(kernel_size) / kernel_size
+        # data_convolved = np.convolve(df_filtered, kernel, mode='same')
+        data_convolved = cumsum[14:] - cumsum[:-14]
+        fig.add_trace(go.Scatter(x=df_filtered.keys().strftime('%Y-%m-%d').values[14:],
                                  y=data_convolved,
                                  mode="lines",
                                  name=label,
@@ -177,73 +178,90 @@ def plot(df):
     fig.update_yaxes(title_text="Infected normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=True, normalize_age=True)
-    fig.show()
+    #fig.show()
+    label = "infected_normalized_age"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Deaths normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=True, normalize_age=True)
-    fig.show()
+    #fig.show()
+    label = "deaths_normalized_age"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Deaths Guenzburg normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=True, normalize_age=True)
-    fig.show()
+    #fig.show()
+    label = "deaths_normalized_age_gz"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Infected Guenzburg normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=-1, age=True, typ="inf", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="inf", secondary=True, normalize_age=True)
-    fig.show()
+    #fig.show()
+    label = "infected_normalized_age_gz"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Infected")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=False)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=True)
-    fig.show()
+    #fig.show()
+    label = "infected_age"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Deaths")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=False)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=True)
-    fig.show()
+    #fig.show()
+    label = "deaths_age"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Deaths Guenzburg")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=False)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=True)
-    fig.show()
+    # fig.show()
+    label = "deaths_age_gz"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Infected Guenzburg")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=-1, age=True, typ="inf", secondary=False)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="inf", secondary=True)
-    fig.show()
+    # fig.show()
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Infected Bundesländer")
-    add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=True, age=False, typ="inf", secondary=False)
-    add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=True, age=False, typ="inf", secondary=True)
-    fig.show()
+    add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=True, age=False, typ="inf", secondary=False)
+    add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=True, age=False, typ="inf", secondary=True)
+    # fig.show()
+    label = "infected"
+    fig.write_html(f"../plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
     fig.update_yaxes(title_text="Tote Bundesländer")
-    add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=True, age=False, typ="death", secondary=False)
-    add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=True, age=False, typ="death", secondary=True)
-    fig.show()
+    add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=True, age=False, typ="death", secondary=False)
+    add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=True, age=False, typ="death", secondary=True)
+    #fig.show()
+    label = "deaths"
+    fig.write_html(f"../plots/rki_{label}.html")
 
-
-# ic(download_data())
-# ic(json_to_csv())
+#ic(download_data())
+#ic(json_to_csv())
 df = read_csv()
 ic(plot(df))
