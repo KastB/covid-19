@@ -323,4 +323,4 @@ for d in data_indices:
         fig.update_yaxes(title_text=label)
 
     # fig.show()
-    fig.write_html(f"../plots/jh_{label}.html")
+    fig.write_html(f"../docs/plots/jh_{label}.html")

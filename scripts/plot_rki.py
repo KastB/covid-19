@@ -180,7 +180,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=True, normalize_age=True)
     #fig.show()
     label = "infected_normalized_age"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -189,7 +189,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=True, normalize_age=True)
     #fig.show()
     label = "deaths_normalized_age"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -198,7 +198,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=True, normalize_age=True)
     #fig.show()
     label = "deaths_normalized_age_gz"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -207,7 +207,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="inf", secondary=True, normalize_age=True)
     #fig.show()
     label = "infected_normalized_age_gz"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -216,7 +216,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=True)
     #fig.show()
     label = "infected_age"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -225,7 +225,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=True)
     #fig.show()
     label = "deaths_age"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -234,7 +234,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=True)
     # fig.show()
     label = "deaths_age_gz"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -250,7 +250,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=True, age=False, typ="inf", secondary=True)
     # fig.show()
     label = "infected"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     fig.update_xaxes(title_text="Date")
@@ -259,7 +259,7 @@ def plot(df):
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=True, age=False, typ="death", secondary=True)
     #fig.show()
     label = "deaths"
-    fig.write_html(f"../plots/rki_{label}.html")
+    fig.write_html(f"../docs/plots/rki_{label}.html")
 
 #ic(download_data())
 #ic(json_to_csv())
