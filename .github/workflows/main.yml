@@ -32,24 +32,3 @@ jobs:
       uses: ad-m/github-push-action@master
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-  deploy:
-    needs: update
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-    - uses: actions/setup-node@v1
-      with:
-        node-version: '8.x'
-    - name: Install data-cli and init package
-      run: |
-        npm install -g data-cli
-        data --version
-        data init data
-    - name: Update metadata and publish to DataHub
-      run: |
-        python scripts/update_datapackage.py
-        data push
-      env:
-        id: ${{secrets.dhid}}
-        username: ${{secrets.dhusername}}
-        token: ${{secrets.dhtoken}}
