@@ -22,7 +22,7 @@ jobs:
       run: |
         cd scripts
         python plot.py
-        # python3 plot_rki.py
+        python3 plot_rki.py
     - name: Commit files
       run: |
         git config --local user.email "action@github.com"
