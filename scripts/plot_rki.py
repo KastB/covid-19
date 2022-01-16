@@ -261,7 +261,7 @@ def plot(df):
     label = "deaths"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
-#ic(download_data())
-#ic(json_to_csv())
+ic(download_data())
+ic(json_to_csv())
 df = read_csv()
 ic(plot(df))
