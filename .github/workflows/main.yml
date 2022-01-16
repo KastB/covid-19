@@ -4,10 +4,7 @@ on:
   push:
     branches: [ master, scripts ]
   schedule:
-    # Upstream repo is updated daily at 4:50 AM UTC:
-    # we can retrieve data a little while later.
-    - cron: '0 30 * * *'
-
+    - cron: '0 1 * * *'
 jobs:
   update:
     runs-on: ubuntu-latest
