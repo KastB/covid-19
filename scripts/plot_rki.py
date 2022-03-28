@@ -21,7 +21,6 @@ data_uri = "https://www.arcgis.com/sharing/rest/content/items/66876b81065340a4a4
 # data_uri = "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?where=1%3D1&outFields=*&outSR=4326&f=json&resultOffset={}"
 # data_uri = "https://services7.arcgis.com/mOBPykOjAyBO2ZKk/arcgis/rest/services/RKI_COVID19/FeatureServer/0/query?where=1%3D1&outFields=*&f=json"
 # data_uri = "https://npgeo-corona-npgeo-de.hub.arcgis.com/datasets/dd4580c810204019a7b8eb3e0b329dd6_0/explore?showTable=true"
-path = "raw_rki_data.csv"
 rki_file = "rki_data.csv"
 
 age_group_size = {
@@ -38,53 +37,13 @@ for ag in age_group_size:
     age_group_factor[ag] = 100000.0 / age_group_size[ag]
 
 
-def json_to_csv():
-    with open(path, "r") as fp:
-        data = json.load(fp)
-    counter = 0
-    for d in data:
-        counter += len(d["features"])
-    print(counter)
-    columns = [f["name"] for f in data[0]["fields"]]
-
-    with open(rki_file, "w") as fp:
-        fp.writelines([";".join(columns) + "\n"])
-    count = 0
-    with open(rki_file, "a") as fp:
-        for d in data:
-            print(f"start new batch {count / len(data)}")
-            count += 1
-            lines = list()
-
-            for f in d["features"]:
-                line = ""
-                for c in columns:
-                    line = f"{line}{f['attributes'][c]};"
-                lines.append(f"{line[:-1]}\n")
-            fp.writelines(lines)
-
-
 def download_data():
-    data = list()
-    more_data = True
-    counter = 0
-    while more_data:
-        print(counter)
-        res = requests.get(data_uri.format(counter)).json()
-        data.append(res)
-        try:
-            if not res["exceededTransferLimit"]:
-                more_data = False
-        except KeyError:
-            more_data = False
-        counter += len(res["features"])
-
-    with open(path, "w") as fp:
-        json.dump(data, fp)
+    with open(rki_file, "w") as fp:
+        fp.writelines([requests.get(data_uri).text])
 
 
 def read_csv():
-    return pd.read_csv(rki_file, sep=";", parse_dates=['Meldedatum', "Refdatum"], date_parser=lambda epoch: pd.to_datetime(epoch, unit='ms'))
+    return pd.read_csv(rki_file, sep=",", parse_dates=['Meldedatum', "Refdatum"])
 
 
 def add_trace(df_filtered, fig, all_time, start_dat, end_dat, value_key, date_key, label, secondary, factor, color):
@@ -179,7 +138,7 @@ def plot(df):
     fig.update_yaxes(title_text="Infected normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=True, normalize_age=True)
-    #fig.show()
+    # fig.show()
     label = "infected_normalized_age"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
@@ -188,7 +147,7 @@ def plot(df):
     fig.update_yaxes(title_text="Deaths normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=True, normalize_age=True)
-    #fig.show()
+    # fig.show()
     label = "deaths_normalized_age"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
@@ -197,7 +156,7 @@ def plot(df):
     fig.update_yaxes(title_text="Deaths Guenzburg normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="death", secondary=True, normalize_age=True)
-    #fig.show()
+    # fig.show()
     label = "deaths_normalized_age_gz"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
@@ -206,7 +165,7 @@ def plot(df):
     fig.update_yaxes(title_text="Infected Guenzburg normalized")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=9774, id_bundesland=-1, age=True, typ="inf", secondary=False, normalize_age=True)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=9774, id_bundesland=-1, age=True, typ="inf", secondary=True, normalize_age=True)
-    #fig.show()
+    # fig.show()
     label = "infected_normalized_age_gz"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
@@ -215,7 +174,7 @@ def plot(df):
     fig.update_yaxes(title_text="Infected")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=False)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="inf", secondary=True)
-    #fig.show()
+    # fig.show()
     label = "infected_age"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
@@ -224,7 +183,7 @@ def plot(df):
     fig.update_yaxes(title_text="Deaths")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=False)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=-1, age=True, typ="death", secondary=True)
-    #fig.show()
+    # fig.show()
     label = "deaths_age"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
@@ -258,11 +217,11 @@ def plot(df):
     fig.update_yaxes(title_text="Tote Bundesländer")
     add_data_to_fig(df, fig, all_time=False, id_landkreis=-1, id_bundesland=True, age=False, typ="death", secondary=False)
     add_data_to_fig(df, fig, all_time=True, id_landkreis=-1, id_bundesland=True, age=False, typ="death", secondary=True)
-    #fig.show()
+    # fig.show()
     label = "deaths"
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
-print(download_data())
-print(json_to_csv())
+
+# ic(download_data())
 df = read_csv()
-print(plot(df))
+ic(plot(df))
