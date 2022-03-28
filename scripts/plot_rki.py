@@ -222,6 +222,6 @@ def plot(df):
     fig.write_html(f"../docs/plots/rki_{label}.html")
 
 
-# ic(download_data())
+cic(download_data())
 df = read_csv()
 ic(plot(df))
